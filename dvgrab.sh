@@ -29,10 +29,10 @@ echo -e "\n\n${Purple}You can decide if you want your tapes to be named automati
 echo -e "\nWe will use the time the tape was originally captured as the file name.\nFor more control you can also name your folders in which the files go."
 echo -e "\nYou can quit this program at any time by pressing Ctrl+c.\n\n\n${NC}Please connect Camera and insert Tape."
 read -s -n 1 -p "Press any key to continue..."
-#conditions
 if [ ! -d "$capturedir" ]; then
 	capturedir=~
-	echo -e "\n\n\nPlease note: Capture Directory is set to $(echo $capturedir). \nIf you would like another location, please open this script in an editor and update capturedir on line 5"
+	echo -e "\n\n\nPlease note: Capture Directory is set to $(echo $capturedir)."
+	echo -e "\nIf you would like another location, please open this script in an editor and update capturedir on line 5"
 fi
 if dvgrab 2>/dev/null; then
 	echo -e "\n\nCamera detected. Continuing...\n"
