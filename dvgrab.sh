@@ -59,7 +59,7 @@ if dvgrab 2>/dev/null; then
 				read -s -p "Press any key to continue... (Exit with Ctrl+c)"
 				cd "$capturedir"
 				dvgrab -showstatus -t -a -rewind
-				echo -e "\nFree space left on device: $(df -h "$capturedir" |tail -n1 | awk '{print $4}')"
+				echo -e "${Green}\nFree space left on device: $(df -h "$capturedir" |tail -n1 | awk '{print $4}')${NC}"
 			done
 			break;;
 		* ) echo -e "\nInvalid Response. Choose Y or N"
