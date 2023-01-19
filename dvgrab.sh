@@ -26,9 +26,14 @@ BWhite='\033[1;37m'       # White
 clear
 echo -e "Welcome to DV capture!\n\nThis program allows you to batch capture miniDV tapes through Firewire."
 echo -e "\n\n${Purple}You can decide if you want your tapes to be named automatically. \nIn this case your files will look like this: dvgrab-2004.05.26_18-03-15.dv"
-echo -e "\nThis means the time they were originally captured as the file date.\nFor more control you can also name your folders in which the files go."
+echo -e "\nWe will use the time the tape was originally captured as the file name.\nFor more control you can also name your folders in which the files go."
 echo -e "\nYou can quit this program at any time by pressing Ctrl+c.\n\n\n${NC}Please connect Camera and insert Tape."
 read -s -n 1 -p "Press any key to continue..."
+#conditions
+if [ ! -d "$capturedir" ]; then
+	capturedir=~
+	echo -e "\n\n\nPlease note: Capture Directory is set to $(echo $capturedir). \nIf you would like another location, please open this script in an editor and update capturedir on line 5"
+fi
 if dvgrab 2>/dev/null; then
 	echo -e "\n\nCamera detected. Continuing...\n"
 	read -p "Do you want to name your tapes? [Y/N]" yn
@@ -43,7 +48,7 @@ if dvgrab 2>/dev/null; then
 					cd "$capturedir/$fname"
 					dvgrab -showstatus -t -a -rewind
 					echo -e "\nFolder created on DVCAPTURE drive: $fname with the following content: $(ls "$capturedir/$fname")"
-					echo -e "${Green}\nFree space left on device: $(df -h | grep DVCAPTURE | awk '{print $4}')${NC}"
+					echo -e "${Green}\nFree space left on device: $(df -h "$capturedir" | tail -n1 | awk '{print $4}')${NC}"
 
 				fi
 			done
@@ -54,11 +59,11 @@ if dvgrab 2>/dev/null; then
 				read -s -p "Press any key to continue... (Exit with Ctrl+c)"
 				cd "$capturedir"
 				dvgrab -showstatus -t -a -rewind
-				echo -e "\nFree space left on device: $(df -h | grep DVCAPTURE | awk '{print $4}')"
+				echo -e "\nFree space left on device: $(df -h "$capturedir" |tail -n1 | awk '{print $4}')"
 			done
 			break;;
 		* ) echo -e "\nInvalid Response. Choose Y or N"
 	esac
 else
-	echo -e "\n\n${Red}No camera detected or dvgrab missing. Please connect firewire cable to camera. \nSwitch camera on and insert miniDV tape${NC}"
+	echo -e "\n\n${Red}No camera detected. Please connect firewire cable to camera. \nSwitch camera on and insert miniDV tape${NC}"
 fi
